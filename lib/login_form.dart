@@ -4,6 +4,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:namer_app/register_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'logged_in_page.dart';
 
@@ -55,8 +56,17 @@ class _LoginFormState extends State<LoginForm> {
                   }
                 });
               },
-              child: const Text('Login'))
+              child: const Text('Login')),
+          ElevatedButton(
+              onPressed: () => switchToRegisterPage(context),
+              child: const Text('Register')),
         ]);
+  }
+
+  void switchToRegisterPage(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const RegisterPage()));
   }
 
   Future<Response> login() async {
@@ -68,8 +78,13 @@ class _LoginFormState extends State<LoginForm> {
     final String body =
         jsonEncode({'username': username, 'password': password});
 
-    Response response =
-        await dio.post(url, data: body, options: Options(headers: headers));
+    late Response response;
+    try {
+      response =
+          await dio.post(url, data: body, options: Options(headers: headers));
+    } on DioException catch (e) {
+      return Future.error(e);
+    }
     return response;
   }
 

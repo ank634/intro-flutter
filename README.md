@@ -20,3 +20,9 @@ After cloning the repo run to fetch all dependencies
 ```bash
 flutter pub get
 ```
+
+# Run The Project
+Connect a simulator with either VS Code or Intellij then execute the command
+```bash
+flutter run
+```
